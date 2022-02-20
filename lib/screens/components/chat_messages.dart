@@ -15,14 +15,16 @@ class ChatMessages extends StatelessWidget {
     final _scrollController = ScrollController();
 
     return FutureBuilder<List<ChatMessageDto>>(
-      initialData: const [],
       future: chatBloc.messages,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
+          print("error ${snapshot.error}");
           return const Center(child: Text("No data"));
         }
 
-        final messages = snapshot.requireData;
+        List messages = snapshot.requireData;
+        messages.sort((a, b) => b.createdDateTime.compareTo(a.createdDateTime));
+        print("messages -> $messages");
 
         return ListView.builder(
           reverse: true,
