@@ -34,9 +34,13 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  void _onChanged(String value) => chatBloc.nameSink.add(value);
+  void _onChanged(String value) {
+    chatBloc.nameSink.add(value);
+  }
 
-  void _onRefreshPressed() => chatBloc.add(ChangeNick());
+  void _onRefreshPressed() {
+    chatBloc.add(RefreshScreen());
+  }
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);

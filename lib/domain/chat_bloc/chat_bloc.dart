@@ -16,19 +16,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       await _handleEvents(event, emit);
     });
 
-    _nameController.stream.listen((nickName) {
-      _nickNameStream = nickName;
-      print("nickname $_nickName");
-    });
+    _nameController.stream.listen((nickName) => _nickName = nickName);
 
-    _messageController.stream.listen((message) {
-      _message = message;
-      print("message $_message");
-    });
+    _messageController.stream.listen((message) => _message = message);
   }
 
   final ChatRepository _chatRepository;
-  String _nickNameStream = "";
   String _nickName = "";
   String _message = "";
 
@@ -36,8 +29,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ChatEvent event,
     Emitter emit,
   ) async {
-    if (event is ChangeNick) {
-      await _changeNick();
+    if (event is RefreshScreen) {
+      await _refreshScreen();
     } else if (event is SendMessage) {
       await _sendMessage(emit);
     } else {
@@ -53,10 +46,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Sink<String> get nameSink => _nameController.sink;
 
-  Future<void> _changeNick() async {
-    print("_changeNick: $_nickNameStream");
-
-    _nickName = _nickNameStream;
+  Future<void> _refreshScreen() async {
+    print("_refreshScreen");
   }
 
   Future<void> _sendMessage(Emitter emit) async {
@@ -72,6 +63,5 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Stream<List<ChatMessageDto>> get messages =>
-      Stream.fromFuture(_chatRepository.messages);
+  Future<List<ChatMessageDto>> get messages => _chatRepository.messages;
 }

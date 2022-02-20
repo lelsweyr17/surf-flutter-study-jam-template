@@ -49,10 +49,13 @@ class _MessageFieldWithSendButtonState
 
   void _onChanged(String value) {
     print("_onChanged $value");
+
     widget.chatBloc.messageSink.add(value);
   }
 
   void _onSendPressed() {
+    print("_onSendPressed");
+
     widget.chatBloc.add(SendMessage());
     textController.clear();
   }

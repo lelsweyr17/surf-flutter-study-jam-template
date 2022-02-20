@@ -5,4 +5,4 @@ abstract class ChatEvent {}
 
 class SendMessage extends ChatEvent {}
 
-class ChangeNick extends ChatEvent {}
+class RefreshScreen extends ChatEvent {}

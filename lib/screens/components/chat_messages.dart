@@ -14,9 +14,9 @@ class ChatMessages extends StatelessWidget {
   Widget build(BuildContext context) {
     final _scrollController = ScrollController();
 
-    return StreamBuilder<List<ChatMessageDto>>(
+    return FutureBuilder<List<ChatMessageDto>>(
       initialData: const [],
-      stream: chatBloc.messages,
+      future: chatBloc.messages,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: Text("No data"));
