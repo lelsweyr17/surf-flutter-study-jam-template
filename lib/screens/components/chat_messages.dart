@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:surf_practice_chat_flutter/data/chat/chat.dart';
+import 'package:surf_practice_chat_flutter/helpers/datetime_extension.dart';
 import 'package:surf_practice_chat_flutter/data/chat/models/message.dart';
 import 'package:surf_practice_chat_flutter/domain/chat_bloc/chat_bloc.dart';
 
@@ -46,7 +47,7 @@ class _ChatMessagesState extends State<ChatMessages> {
               message: message,
             );
           },
-          separatorBuilder: (_, __) => _Separator(),
+          separatorBuilder: (_, __) => const _Separator(),
         );
       },
     );
@@ -87,6 +88,7 @@ class _MessageItem extends StatelessWidget {
         title: Text(
           message.author.name,
           textAlign: textAlign,
+          style: const TextStyle(fontWeight: FontWeight.w500),
         ),
         subtitle: _Subtitle(
           isMyUser: isMyUser,
@@ -124,7 +126,7 @@ class _Subtitle extends StatelessWidget {
           textAlign: textAlign,
         ),
         Text(
-          message.createdDateTime.toString(),
+          message.createdDateTime.formatted,
           textAlign: textAlign,
         ),
       ],

@@ -29,6 +29,11 @@ class _MessageFieldWithSendButtonState
       builder: (context, state) {
         return SafeArea(
           child: ListTile(
+            leading: IconButton(
+              icon: const Icon(Icons.share_location_rounded),
+              color: Theme.of(context).primaryColor,
+              onPressed: () {},
+            ),
             title: TextFormField(
               controller: textController,
               onChanged: _onChanged,

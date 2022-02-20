@@ -12,8 +12,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc(ChatRepository chatRepository)
       : _chatRepository = chatRepository,
         super(ChatInitial()) {
-    on<ChatEvent>((event, emit) async {
-      await _handleEvents(event, emit);
+    on<ChatEvent>((event, _) async {
+      await _handleEvents(event);
     });
 
     _nameController.stream.listen((nickName) => _nickName = nickName);
@@ -25,14 +25,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   String _nickName = "";
   String _message = "";
 
-  Future<void> _handleEvents(
-    ChatEvent event,
-    Emitter emit,
-  ) async {
+  Future<void> _handleEvents(ChatEvent event) async {
     if (event is RefreshScreen) {
-      await _refreshScreen(emit);
+      await _refreshScreen();
     } else if (event is SendMessage) {
-      await _sendMessage(emit);
+      await _sendMessage();
     } else {
       throw UnimplementedError("Unimplemented chat event");
     }
@@ -48,18 +45,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   final errorStream = StreamController<String>();
 
-  Future<void> _refreshScreen(Emitter emit) async {
+  Future<void> _refreshScreen() async {
     print("_refreshScreen");
     emit(ChatInitial());
   }
 
-  Future<void> _sendMessage(Emitter emit) async {
+  Future<void> _sendMessage() async {
     print("_sendMessage --- nickName: $_nickName, message: $_message");
 
     emit(SendingMessage());
     try {
       await _chatRepository.sendMessage(_nickName, _message);
       messageSink.add("");
+      print("message $_message");
       emit(ChatInitial());
     } on InvalidNameException catch (e, _) {
       errorStream.add(e.message);

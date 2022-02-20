@@ -30,10 +30,12 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       titleSpacing: 8,
       actions: [
-        IconButton(
-          onPressed: _onRefreshPressed,
+        Padding(
           padding: const EdgeInsets.only(right: 16),
-          icon: const Icon(Icons.refresh),
+          child: IconButton(
+            onPressed: _onRefreshPressed,
+            icon: const Icon(Icons.refresh),
+          ),
         ),
       ],
     );
