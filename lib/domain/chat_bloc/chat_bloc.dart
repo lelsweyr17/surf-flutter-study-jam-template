@@ -48,6 +48,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Future<void> _refreshScreen() async {
     print("_refreshScreen");
+    emit(ChatInitial());
   }
 
   Future<void> _sendMessage(Emitter emit) async {
@@ -63,5 +64,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<List<ChatMessageDto>> get messages => _chatRepository.messages;
+  Future<List<ChatMessageDto>> get messages {
+    try {
+      return _chatRepository.messages;
+    } catch (e) {
+      throw UnimplementedError(e.toString());
+    }
+  }
 }

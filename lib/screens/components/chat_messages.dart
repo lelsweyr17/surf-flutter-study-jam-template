@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:surf_practice_chat_flutter/data/chat/models/message.dart';
 import 'package:surf_practice_chat_flutter/domain/chat_bloc/chat_bloc.dart';
 
-class ChatMessages extends StatelessWidget {
+class ChatMessages extends StatefulWidget {
   const ChatMessages({
     Key? key,
     required this.chatBloc,
@@ -11,11 +11,16 @@ class ChatMessages extends StatelessWidget {
   final ChatBloc chatBloc;
 
   @override
+  State<ChatMessages> createState() => _ChatMessagesState();
+}
+
+class _ChatMessagesState extends State<ChatMessages> {
+  @override
   Widget build(BuildContext context) {
     final _scrollController = ScrollController();
 
     return FutureBuilder<List<ChatMessageDto>>(
-      future: chatBloc.messages,
+      future: widget.chatBloc.messages,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           print("error ${snapshot.error}");
@@ -24,7 +29,6 @@ class ChatMessages extends StatelessWidget {
 
         List messages = snapshot.requireData;
         messages.sort((a, b) => b.createdDateTime.compareTo(a.createdDateTime));
-        print("messages -> $messages");
 
         return ListView.builder(
           reverse: true,

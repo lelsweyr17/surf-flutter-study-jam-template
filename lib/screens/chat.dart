@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:surf_practice_chat_flutter/data/chat/repository/repository.dart';
 import 'package:surf_practice_chat_flutter/domain/chat_bloc/chat_bloc.dart';
@@ -30,10 +31,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ChatAppBar(chatBloc: chatBloc),
-      body: ChatMessages(chatBloc: chatBloc),
-      bottomNavigationBar: MessageFieldWithSendButton(chatBloc: chatBloc),
+    return BlocBuilder(
+      bloc: chatBloc,
+      builder: (context, state) => Scaffold(
+        appBar: ChatAppBar(chatBloc: chatBloc),
+        body: ChatMessages(chatBloc: chatBloc),
+        bottomNavigationBar: MessageFieldWithSendButton(chatBloc: chatBloc),
+      ),
     );
   }
 }
