@@ -30,7 +30,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Emitter emit,
   ) async {
     if (event is RefreshScreen) {
-      await _refreshScreen();
+      await _refreshScreen(emit);
     } else if (event is SendMessage) {
       await _sendMessage(emit);
     } else {
@@ -46,7 +46,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Sink<String> get nameSink => _nameController.sink;
 
-  Future<void> _refreshScreen() async {
+  Future<void> _refreshScreen(Emitter emit) async {
     print("_refreshScreen");
     emit(ChatInitial());
   }

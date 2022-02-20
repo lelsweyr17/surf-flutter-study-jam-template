@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:surf_practice_chat_flutter/data/chat/chat.dart';
 import 'package:surf_practice_chat_flutter/domain/chat_bloc/chat_bloc.dart';
 import 'package:surf_practice_chat_flutter/helpers/context_extension.dart';
 
@@ -22,6 +24,9 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
           hintText: context.localizations.enterYourNick,
           hintStyle: const TextStyle(color: Colors.white),
         ),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(ChatRepository.maxNameLength),
+        ],
       ),
       titleSpacing: 8,
       actions: [

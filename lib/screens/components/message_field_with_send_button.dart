@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:surf_practice_chat_flutter/data/chat/chat.dart';
 import 'package:surf_practice_chat_flutter/domain/chat_bloc/chat_bloc.dart';
 import 'package:surf_practice_chat_flutter/helpers/context_extension.dart';
 
@@ -33,6 +35,10 @@ class _MessageFieldWithSendButtonState
               decoration: InputDecoration(
                 hintText: context.localizations.message,
               ),
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(
+                    ChatRepository.maxMessageLength),
+              ],
             ),
             trailing: IconButton(
               onPressed: _onSendPressed,
