@@ -12,6 +12,8 @@ class ChatMessages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _scrollController = ScrollController();
+
     return StreamBuilder<List<ChatMessageDto>>(
       initialData: const [],
       stream: chatBloc.messages,
@@ -23,6 +25,8 @@ class ChatMessages extends StatelessWidget {
         final messages = snapshot.requireData;
 
         return ListView.builder(
+          reverse: true,
+          controller: _scrollController,
           itemCount: messages.length,
           itemBuilder: (context, itemNumber) {
             final message = messages[itemNumber];
