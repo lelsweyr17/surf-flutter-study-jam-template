@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:surf_practice_chat_flutter/domain/chat_bloc/chat_bloc.dart';
 import 'package:surf_practice_chat_flutter/helpers/context_extension.dart';
 
-class MessageFieldWithSendButton extends StatelessWidget {
+class MessageFieldWithSendButton extends StatefulWidget {
   const MessageFieldWithSendButton({
     Key? key,
     required this.chatBloc,
@@ -12,15 +12,24 @@ class MessageFieldWithSendButton extends StatelessWidget {
   final ChatBloc chatBloc;
 
   @override
+  State<MessageFieldWithSendButton> createState() =>
+      _MessageFieldWithSendButtonState();
+}
+
+class _MessageFieldWithSendButtonState
+    extends State<MessageFieldWithSendButton> {
+  final textController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder(
-      bloc: chatBloc,
+      bloc: widget.chatBloc,
       builder: (context, state) {
         return SafeArea(
           child: ListTile(
             title: TextFormField(
+              controller: textController,
               onChanged: _onChanged,
-              initialValue: "",
               decoration: InputDecoration(
                 hintText: context.localizations.message,
               ),
@@ -40,8 +49,11 @@ class MessageFieldWithSendButton extends StatelessWidget {
 
   void _onChanged(String value) {
     print("_onChanged $value");
-    chatBloc.messageSink.add(value);
+    widget.chatBloc.messageSink.add(value);
   }
 
-  void _onSendPressed() => chatBloc.add(SendMessage());
+  void _onSendPressed() {
+    widget.chatBloc.add(SendMessage());
+    textController.clear();
+  }
 }

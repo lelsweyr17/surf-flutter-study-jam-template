@@ -34,7 +34,7 @@ class ChatMessages extends StatelessWidget {
             return ListTile(
               title: Text(message.author.name),
               subtitle: Text(message.message),
-              trailing: Text(message.createdDateTime.toUtc().toString()),
+              trailing: Text(message.createdDateTime.toString()),
             );
           },
         );
