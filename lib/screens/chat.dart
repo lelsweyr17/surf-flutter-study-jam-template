@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:surf_practice_chat_flutter/data/chat/repository/repository.dart';
+import 'package:surf_practice_chat_flutter/domain/chat_bloc/chat_bloc.dart';
 import 'package:surf_practice_chat_flutter/screens/components/app_bar.dart';
+import 'package:surf_practice_chat_flutter/screens/components/chat_messages.dart';
 import 'package:surf_practice_chat_flutter/screens/components/message_field_with_send_button.dart';
 
 /// Chat screen templete. This is your starting point.
@@ -18,13 +20,20 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  late final ChatBloc chatBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    chatBloc = ChatBloc(widget.chatRepository);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ChatAppBar(chatRepository: widget.chatRepository),
-      bottomNavigationBar: MessageFieldWithSendButton(
-        chatRepository: widget.chatRepository,
-      ),
+      appBar: ChatAppBar(chatBloc: chatBloc),
+      body: ChatMessages(chatBloc: chatBloc),
+      bottomNavigationBar: MessageFieldWithSendButton(chatBloc: chatBloc),
     );
   }
 }
