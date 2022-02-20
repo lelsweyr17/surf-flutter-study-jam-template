@@ -46,6 +46,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Sink<String> get nameSink => _nameController.sink;
 
+  final errorStream = StreamController<String>();
+
   Future<void> _refreshScreen(Emitter emit) async {
     print("_refreshScreen");
     emit(ChatInitial());
@@ -56,18 +58,26 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     emit(SendingMessage());
     try {
-      _chatRepository.sendMessage(_nickName, _message);
+      await _chatRepository.sendMessage(_nickName, _message);
       messageSink.add("");
+      emit(ChatInitial());
+    } on InvalidNameException catch (e, _) {
+      errorStream.add(e.message);
+      emit(ChatInitial());
+    } on InvalidMessageException catch (e, _) {
+      errorStream.add(e.message);
       emit(ChatInitial());
     } catch (e) {
       print(e);
     }
   }
 
-  Future<List<ChatMessageDto>> get messages {
+  Future<List<ChatMessageDto>> get messages async {
     try {
-      return _chatRepository.messages;
+      final _messages = await _chatRepository.messages;
+      return _messages;
     } catch (e) {
+      emit(ChatInitial());
       throw UnimplementedError(e.toString());
     }
   }

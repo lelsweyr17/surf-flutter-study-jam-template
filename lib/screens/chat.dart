@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,11 +24,23 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   late final ChatBloc chatBloc;
+  late final StreamSubscription errorStream;
 
   @override
   void initState() {
     super.initState();
     chatBloc = ChatBloc(widget.chatRepository);
+
+    errorStream = chatBloc.errorStream.stream.listen((message) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+    });
+  }
+
+  @override
+  void dispose() {
+    errorStream.cancel();
+    super.dispose();
   }
 
   @override
