@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:surf_practice_chat_flutter/data/chat/models/message.dart';
-import 'package:surf_practice_chat_flutter/data/chat/repository/firebase.dart';
 import 'package:surf_practice_chat_flutter/domain/chat_bloc/chat_bloc.dart';
 
 class ChatMessages extends StatelessWidget {
@@ -14,12 +12,9 @@ class ChatMessages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _firebaseClient = FirebaseFirestore.instance;
-    final firebase = ChatRepositoryFirebase(_firebaseClient);
-
     return FutureBuilder<List<ChatMessageDto>>(
       initialData: const [],
-      future: firebase.messages,
+      future: chatBloc.messages,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -29,16 +24,17 @@ class ChatMessages extends StatelessWidget {
 
         final messages = snapshot.requireData;
 
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              for (var message in messages)
-                ListTile(
-                  title: Text(message.author.name),
-                  subtitle: Text(message.message),
-                )
-            ],
-          ),
+        return ListView.builder(
+          itemCount: messages.length,
+          itemBuilder: (context, itemNumber) {
+            final message = messages[itemNumber];
+
+            return ListTile(
+              title: Text(message.author.name),
+              subtitle: Text(message.message),
+              trailing: Text(message.createdDateTime.toUtc().toString()),
+            );
+          },
         );
       },
     );

@@ -61,7 +61,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Future<void> _sendMessage(Emitter emit) async {
     print("_sendMessage --- nickName: $_nickName, message: $_message");
-    
+
     emit(SendingMessage());
 
     _chatRepository.sendMessage(_nickName, _message);
@@ -69,4 +69,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     emit(ChatInitial());
   }
+
+  Future<List<ChatMessageDto>> get messages => _chatRepository.messages;
 }
