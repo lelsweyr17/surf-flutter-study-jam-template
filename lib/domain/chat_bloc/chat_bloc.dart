@@ -63,12 +63,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     print("_sendMessage --- nickName: $_nickName, message: $_message");
 
     emit(SendingMessage());
-
-    _chatRepository.sendMessage(_nickName, _message);
-    messageSink.add("");
-
-    emit(ChatInitial());
+    try {
+      _chatRepository.sendMessage(_nickName, _message);
+      messageSink.add("");
+      emit(ChatInitial());
+    } catch (e) {
+      print(e);
+    }
   }
 
-  Future<List<ChatMessageDto>> get messages => _chatRepository.messages;
+  Stream<List<ChatMessageDto>> get messages =>
+      Stream.fromFuture(_chatRepository.messages);
 }

@@ -12,14 +12,12 @@ class ChatMessages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<ChatMessageDto>>(
+    return StreamBuilder<List<ChatMessageDto>>(
       initialData: const [],
-      future: chatBloc.messages,
+      stream: chatBloc.messages,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
-            child: Text("No data"),
-          );
+          return const Center(child: Text("No data"));
         }
 
         final messages = snapshot.requireData;
