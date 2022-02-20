@@ -81,4 +81,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       throw UnimplementedError(e.toString());
     }
   }
+
+  bool isMyUser(String name) => name == _nickName;
 }
